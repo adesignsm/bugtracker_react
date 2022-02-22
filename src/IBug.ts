@@ -2,7 +2,8 @@ export interface IBug {
 
     id: string,
     description: string,
-    priority: BugPriority
+    priority: BugPriority,
+    assignee: string
 }
 
 export enum BugPriority {
