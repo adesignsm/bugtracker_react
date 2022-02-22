@@ -1,0 +1,15 @@
+body, html {
+    font-family: Helvetica, sans-serif;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 30vw;
+
+    input {
+        margin-bottom: 2vw;
+        font-size: 120%;
+    }
+}
