@@ -1,9 +1,13 @@
 import { IBug } from "./IBug";
 import "./style.css"
 
-const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function}) => {
+const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function, PriorityColor: String}) => {
     
-    const {bugs, onDeleteBug} = props;
+    let {bugs, onDeleteBug} = props;
+
+    bugs.forEach((bug, index) => {
+        console.log(bug.color);
+    });
 
     const resolvePressed = (id: string) => {
         onDeleteBug(id);
@@ -20,11 +24,11 @@ const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function}) => {
             </thead>
 
             <tbody>
-                {bugs.length === 0 && <tr><td> No bugs have been picked out...</td></tr>}
+                {bugs.length === 0 && <tr><td></td></tr>}
                 {bugs.length > 0 && bugs.map(bug => 
                     <tr key = {bug.id}>
                         <td> {bug.description} </td>
-                        <td> {bug.priority} </td>
+                        <td style = {{color: bug.color}}> {bug.priority} </td>
                         <td> {bug.assignee} </td>
                         <td> <button onClick = {() => resolvePressed(bug.id)}> Resolved Bug </button></td>
                     </tr>
