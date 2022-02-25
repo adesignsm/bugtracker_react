@@ -13,6 +13,12 @@ const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function}) => {
         onDeleteBug(id);
     };
 
+    const SearchQuery = (event) => {
+        let query = `${event.target.innerHTML} stackoverflow`;
+
+        window.open(`https://www.google.com/search?q=${query}`, "_blank");
+    };
+
     return (
         <table>
             <thead>
@@ -27,7 +33,7 @@ const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function}) => {
                 {bugs.length === 0 && <tr><td></td></tr>}
                 {bugs.length > 0 && bugs.map(bug => 
                     <tr key = {bug.id} style = {{borderBottom: "1px solid #fff"}}>
-                        <td style = {{borderBottom: "1px solid #fff", paddingRight: "100px"}}> {bug.description} </td>
+                        <td onClick = {event => {SearchQuery(event)}} style = {{borderBottom: "1px solid #fff", paddingRight: "100px"}}> {bug.description} </td>
                         <td style = {{borderBottom: "1px solid #fff", color: bug.color, paddingRight: "100px"}}> {bug.priority} </td>
                         <td style = {{borderBottom: "1px solid #fff"}}> {bug.assignee} </td>
                         <td> <CheckIcon cursor = "pointer" marginLeft = "5vw" onClick = {() => resolvePressed(bug.id)} /> </td>
