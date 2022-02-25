@@ -96,4 +96,12 @@ form #submit-button {
   border: 1px solid #fff;
   padding: 2vw;
 }
+
+#table-container table td {
+  width: 100%;
+}
+
+#table-container table td:nth-child(1) {
+  cursor: pointer;
+}
 /*# sourceMappingURL=style.css.map */

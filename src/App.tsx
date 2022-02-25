@@ -1,8 +1,8 @@
 import React, { FormEvent, useEffect } from "react";
 import { useState } from "react";
-import {Route, Routes} from "react-router-dom";
 import { BugPriority, IBug } from "./IBug";
 import { v4 as uuid } from "uuid";
+import {Route, Routes} from "react-router-dom";
 import { useNavigate } from "react-router";
 import BugListTable from "./BugListTable.tsx";
 
@@ -29,7 +29,7 @@ const App = () => {
             color: Color
         } 
 
-        await fetch("http://localhost:5000/record/add/", {
+        await fetch("http://localhost:5000/record/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -57,6 +57,10 @@ const App = () => {
         //work around
         localStorage.setItem(newBug.id, JSON.stringify(newBug));
     }
+
+    useEffect(() => {
+        console.log(localStorage);
+    }, []);
 
     const PriorityFuncs = (event) => {
 

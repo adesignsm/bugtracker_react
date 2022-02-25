@@ -89,5 +89,13 @@ form {
         color: #fff;
         border: 1px solid #fff;
         padding: 2vw;
+
+        td {
+            width: 100%;
+        }
+
+        td:nth-child(1) {
+            cursor: pointer;
+        }
     }
 }

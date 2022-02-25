@@ -15,7 +15,8 @@ module.exports = {
         client.connect((error, db) => {
             
             if (db) {
-                _db = db.db("bugs");
+                _db = db.db("BugTrackerDB");
+                console.log(_db);
                 console.log("mongo connect success");
             }
             
@@ -23,7 +24,7 @@ module.exports = {
         })
     },
 
-    getDB: function() {
+    getDb: function() {
 
         return _db;
     }
