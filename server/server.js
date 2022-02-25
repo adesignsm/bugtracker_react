@@ -7,7 +7,7 @@ require("dotenv").config({
     path: "./config.env"
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 const dbo = require("./db/conn");
 
 app.use(cors());
@@ -22,5 +22,5 @@ app.listen(port, () => {
     });
 
     console.log(`server running on port: ${port}`);
-})
+});
 

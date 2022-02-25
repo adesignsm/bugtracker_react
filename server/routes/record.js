@@ -1,12 +1,12 @@
 const express = require("express");
 const recordRoutes = express.Router();
 const dbo = require("../db/conn");
-const ObjectID = require("mongoose").ObjectId;
+const ObjectID = require("mongodb").ObjectId;
 
 //get all data from db
 recordRoutes.route("/record").get((req, res) => {
     
-    let db_connect = dbo.getDB("bugs");
+    let db_connect = dbo.getDb("bugs");
     
     db_connect
       .collection("records")
@@ -20,7 +20,7 @@ recordRoutes.route("/record").get((req, res) => {
 //get data by its id
 recordRoutes.route("/record/:id").get((req, res) => {
     
-    let db_connect = dbo.getDB();
+    let db_connect = dbo.getDb();
     let myquery = { _id: ObjectID(req.params.id) };
     
     db_connect.collection("records").findOne(myquery, (error, result) => {
@@ -32,7 +32,7 @@ recordRoutes.route("/record/:id").get((req, res) => {
 //post data to the db
 recordRoutes.route("/record/add").post((req, res) => {
     
-    let db_connect = dbo.getDB();
+    let db_connect = dbo.getDb();
 
     let bug_obj = {
         bugDescription: req.body.bug_description,
@@ -50,7 +50,7 @@ recordRoutes.route("/record/add").post((req, res) => {
 //update data by its id
 recordRoutes.route("/update/:id").post((req, response) => {
 
-    let db_connect = dbo.getDB();
+    let db_connect = dbo.getDb();
     let myquery = { _id: ObjectID(req.params.id) };
 
     let newvalues = {
@@ -71,7 +71,7 @@ recordRoutes.route("/update/:id").post((req, response) => {
 //delete data
 recordRoutes.route("/:id").delete(function (req, response) {
 
-    let db_connect = dbo.getDB();
+    let db_connect = dbo.getDb();
     let myquery = { _id: ObjectID(req.params.id) };
         
     db_connect.collection("records").deleteOne(myquery, function (err, obj) {

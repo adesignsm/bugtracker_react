@@ -1,13 +1,13 @@
 import { IBug } from "./IBug";
+import { useEffect, useState } from "react";
+import { CheckIcon } from "@chakra-ui/icons";
+
 import "./style.css"
 
-const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function, PriorityColor: String}) => {
+const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function}) => {
     
+    const [bugList, setBugList] = useState({});
     let {bugs, onDeleteBug} = props;
-
-    bugs.forEach((bug, index) => {
-        console.log(bug.color);
-    });
 
     const resolvePressed = (id: string) => {
         onDeleteBug(id);
@@ -26,11 +26,11 @@ const BugListTable = (props: {bugs: IBug[], onDeleteBug: Function, PriorityColor
             <tbody>
                 {bugs.length === 0 && <tr><td></td></tr>}
                 {bugs.length > 0 && bugs.map(bug => 
-                    <tr key = {bug.id}>
-                        <td> {bug.description} </td>
-                        <td style = {{color: bug.color}}> {bug.priority} </td>
-                        <td> {bug.assignee} </td>
-                        <td> <button onClick = {() => resolvePressed(bug.id)}> Resolved Bug </button></td>
+                    <tr key = {bug.id} style = {{borderBottom: "1px solid #fff"}}>
+                        <td style = {{borderBottom: "1px solid #fff", paddingRight: "100px"}}> {bug.description} </td>
+                        <td style = {{borderBottom: "1px solid #fff", color: bug.color, paddingRight: "100px"}}> {bug.priority} </td>
+                        <td style = {{borderBottom: "1px solid #fff"}}> {bug.assignee} </td>
+                        <td> <CheckIcon cursor = "pointer" marginLeft = "5vw" onClick = {() => resolvePressed(bug.id)} /> </td>
                     </tr>
                 )}
             </tbody>

@@ -1,18 +1,23 @@
-import React, { FormEvent } from "react";
-import "./style.css";
-import { useState, useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
+import { useState } from "react";
+import {Route, Routes} from "react-router-dom";
 import { BugPriority, IBug } from "./IBug";
 import { v4 as uuid } from "uuid";
+import { useNavigate } from "react-router";
 import BugListTable from "./BugListTable.tsx";
 
+import "./style.css";
+
 const App = () => {
+    const navigate = useNavigate();
+
     const [BugDescription, setBugDescription] = useState<string>("");
     const [BugPriority, setBugPriority] = useState<string>();
     const [Assignee, setAssignee] = useState<string>("");
     const [Color, setColor] = useState<string>("");
     const [BugList, setBugList] = useState<IBug[]>([]);
 
-    const AddBug = (event: FormEvent) => {
+    const AddBug = async (event: FormEvent) => {
 
         event.preventDefault();
 
@@ -22,8 +27,22 @@ const App = () => {
             priority: BugPriority as BugPriority,
             assignee: Assignee,
             color: Color
-        }
+        } 
 
+        await fetch("http://localhost:5000/record/add/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(newBug),
+        
+        }).catch(error => {
+
+            console.log(error);
+            return;
+        }); 
+    
         setBugList([
             ...BugList,
             newBug,
@@ -31,6 +50,12 @@ const App = () => {
 
         setBugDescription("");
         setAssignee("");
+        setBugPriority("DEFAULT");
+
+        navigate("/");
+
+        //work around
+        localStorage.setItem(newBug.id, JSON.stringify(newBug));
     }
 
     const PriorityFuncs = (event) => {
@@ -39,22 +64,24 @@ const App = () => {
 
         setBugPriority(event.target.value);
 
-        if (priorityValue == "LOW") {
+        if (priorityValue === "LOW") {
             console.log("low detect");
-            setColor("green");
+            setColor("#77DD77");
         
-        } else if (priorityValue == "MEDIUM") {
+        } else if (priorityValue === "MEDIUM") {
             console.log("medium detect");
-            setColor("yellow");
+            setColor("#FDFD96");
         
-        } else if (priorityValue == "HIGH") {
+        } else if (priorityValue === "HIGH") {
             console.log("high detect");
-            setColor("red");
+            setColor("#FF6961");
         }
  
     }
 
     const DeleteBug = (id: string) => {
+
+        localStorage.removeItem(id);
 
         const bugs = BugList.filter(bug => bug.id !== id);
         setBugList(bugs);
@@ -62,12 +89,8 @@ const App = () => {
 
     return (
         <div>
-            <div id = "table-container">
-                <BugListTable bugs = {BugList} onDeleteBug = {(id: string) => DeleteBug(id)} />
-            </div>
-
             <div id = "bug-form">
-                <h1 style = {{color: "#fff"}}> 🖥 Bugtracker 🖥 </h1>
+                <h1 style = {{color: "#fff"}}> 🖥 ADM Bugtracker. </h1>
                 <form onSubmit = {AddBug}>
                     <label htmlFor = "bugDescription"> 📝 New bug description </label>
                     <input required type = "text" id = "bugDescription" value = {BugDescription} onChange = {
@@ -79,7 +102,7 @@ const App = () => {
                         event => setAssignee(event.target.value)
                     } />
 
-                    <label htmlFor = "bugPriority"> 🪲 Priority Level </label>
+                    <label htmlFor = "bugPriority"> 📈 Priority Level </label>
                     <select required id = "bugPriority" value = {BugPriority} onChange = {event => PriorityFuncs(event)}>
                         <option value = "DEFAULT"> Select a level </option>
                         <option value = "LOW"> Low </option>
@@ -89,6 +112,11 @@ const App = () => {
 
                     <button id = "submit-button" type = "submit"> Add this bug </button>
                 </form>
+            </div>
+
+            <div id = "table-container">
+                <h1> 👾 Bug List Table. </h1>
+                <BugListTable bugs = {BugList} onDeleteBug = {(id: string) => DeleteBug(id)} />
             </div>
         </div>    
     )
