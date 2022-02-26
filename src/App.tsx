@@ -60,6 +60,8 @@ const App = () => {
 
     useEffect(() => {
         console.log(localStorage);
+
+        BugListTable
     }, []);
 
     const PriorityFuncs = (event) => {
